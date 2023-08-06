@@ -1,0 +1,51 @@
+@startuml ClassDiagram
+
+package Domains {
+  class Game {
+    -id: string
+    -turns: Turn[]
+    -startAt: Date
+  }
+
+  class Turn {
+    -id: string
+    -turnCount: number
+    -move: Move
+    -squares: Square[]
+    -nextDisc: 'black' | 'white'
+    -endAt: Date
+  }
+
+  class Move {
+    -id: string
+    -x: number
+    -y: number
+  }
+
+  class Square {
+    -id: string
+    -x: number
+    -y: number
+    -disc: '' | 'black' | 'white'
+  }
+
+  Game --> Turn
+  Turn --> Move
+  Turn --> Square
+}
+
+package Usecases {
+  class GameUsecase {
+    startGame(): Game
+  }
+
+  class TurnUsecase {
+    registerTurn(turn: Turn): void
+  }
+
+  GameUsecase --> Game
+  TurnUsecase --> Turn
+}
+
+
+@enduml
