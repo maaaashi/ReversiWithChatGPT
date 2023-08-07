@@ -58,20 +58,13 @@ package Usecases {
 package Gateway {
   class GameGateway {
     gameInputPort: GameInputPort
-    gameOutputPort: GameOutputPort
-    gameDriver: GameDriver
   }
 
   interface GameGatewayInputPort {
     registerTurn(turn: Turn): void
   }
 
-  interface GameGatewayOutputPort {
-    registerTurn(turn: Turn): void
-  }
-
   GameGateway --> GameGatewayInputPort
-  GameGateway --> GameGatewayOutputPort
   GameGateway ..|> GameUsecaseInputPort
 }
 
@@ -87,7 +80,7 @@ package Presenter {
 
   }
 
-  GamePresenter ..|> GameGatewayOutputPort
+  GamePresenter ..|> GameUsecaseOutputPort
 }
 
 @enduml
