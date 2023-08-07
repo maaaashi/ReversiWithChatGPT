@@ -36,16 +36,58 @@ package Domains {
 
 package Usecases {
   class GameUsecase {
+    gameUsecaseInputPort: GameUsecaseInputPort
+    gameUsecaseOutputPort: GameUsecaseOutputPort
+    startGame(): Game
+    registerTurn(turn: Turn): void
+  }
+
+  interface GameUsecaseInputPort {
     startGame(): Game
   }
 
-  class TurnUsecase {
+  interface GameUsecaseOutputPort {
     registerTurn(turn: Turn): void
   }
 
   GameUsecase --> Game
-  TurnUsecase --> Turn
+  GameUsecase --> GameUsecaseInputPort
+  GameUsecase --> GameUsecaseOutputPort
 }
 
+package Gateway {
+  class GameGateway {
+    gameInputPort: GameInputPort
+    gameOutputPort: GameOutputPort
+    gameDriver: GameDriver
+  }
+
+  interface GameGatewayInputPort {
+    registerTurn(turn: Turn): void
+  }
+
+  interface GameGatewayOutputPort {
+    registerTurn(turn: Turn): void
+  }
+
+  GameGateway --> GameGatewayInputPort
+  GameGateway --> GameGatewayOutputPort
+  GameGateway ..|> GameUsecaseInputPort
+}
+
+package Driver {
+  class GameDriver {
+    startGame(): Response
+  }
+  GameDriver ..|> GameGatewayInputPort
+}
+
+package Presenter {
+  class GamePresenter {
+
+  }
+
+  GamePresenter ..|> GameGatewayOutputPort
+}
 
 @enduml
