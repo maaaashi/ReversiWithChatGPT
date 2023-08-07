@@ -61,7 +61,7 @@ package Gateway {
   }
 
   interface GameGatewayInputPort {
-    registerTurn(turn: Turn): void
+    startGame(): Game
   }
 
   GameGateway --> GameGatewayInputPort
