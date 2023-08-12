@@ -6,11 +6,11 @@ import {
 
 export class GameUsecase {
   constructor(
-    gameUsecaseInputPort: GameUsecaseInputPort,
-    gameUsecaseOutputPort: GameUsecaseOutputPort
+    private gameUsecaseInputPort: GameUsecaseInputPort,
+    private gameUsecaseOutputPort: GameUsecaseOutputPort
   ) {}
 
   startGame(): Game {
-    throw new Error('Method not implemented.')
+    return this.gameUsecaseInputPort.startGame()
   }
 }

@@ -1,7 +1,21 @@
-import { describe, expect, it } from 'vitest'
+import { describe, expect, it, vi } from 'vitest'
+import {
+  GameUsecaseInputPort,
+  GameUsecaseOutputPort,
+} from './Port/GameUsecasePort'
+import { GameUsecase } from './GameUsecase'
+import { Game } from '@/Domains/Game'
 
-describe('test', () => {
-  it('should work', () => {
-    expect(1).toBe(1)
+describe('GameUsecase', () => {
+  it('startGame() should work', () => {
+    const mockInputPort = {} as GameUsecaseInputPort
+    const mockOutputPort = {} as GameUsecaseOutputPort
+    mockInputPort.startGame = vi.fn(() => {
+      return new Game('1', [], new Date())
+    })
+
+    const usecase = new GameUsecase(mockInputPort, mockOutputPort)
+    usecase.startGame()
+    expect(mockInputPort.startGame).toBeCalled()
   })
 })
