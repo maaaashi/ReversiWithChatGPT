@@ -1,40 +1,16 @@
-export class Cell {
-  constructor(private _cell: 'black' | 'white' | 'empty') {}
-
-  get cell() {
-    return this._cell
-  }
-
-  view(): string {
-    switch (this._cell) {
-      case 'black':
-        return '●'
-      case 'white':
-        return '○'
-      case 'empty':
-        return ''
-    }
-  }
-}
+import { initialBoard } from '@/libs/initialBoard'
+import { Turn } from './Turn'
+import { v4 as uuidV4 } from 'uuid'
 
 export class Game {
-  constructor(private _board: Cell[][] = initialBoard()) {}
+  constructor(private _turns: Turn[]) {}
 
-  get board(): Cell[][] {
-    return this._board
+  lastTurn(): Turn {
+    return this._turns[this._turns.length - 1]
   }
-}
 
-const initialBoard = (): Cell[][] => {
-  let board: Cell[][] = Array(8)
-    .fill(null)
-    .map(() => Array(8).fill(new Cell('empty')))
-
-  // 初期配置
-  board[3][3] = new Cell('white')
-  board[3][4] = new Cell('black')
-  board[4][3] = new Cell('black')
-  board[4][4] = new Cell('white')
-
-  return board
+  newGame(): void {
+    this._turns = []
+    this._turns.push(new Turn(uuidV4(), 0, initialBoard(), 'black'))
+  }
 }

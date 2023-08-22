@@ -1,6 +1,7 @@
 import { Header } from '@/components/Header'
 import './globals.css'
 import type { Metadata } from 'next'
+import { RecoilRootComponent } from '@/components/RecoilRootComponent'
 
 export const metadata: Metadata = {
   title: 'Create Next App',
@@ -15,8 +16,10 @@ export default function RootLayout({
   return (
     <html lang='ja'>
       <body className='bg-base-300 min-h-screen overflow-hidden w-full'>
-        <Header />
-        {children}
+        <RecoilRootComponent>
+          <Header />
+          {children}
+        </RecoilRootComponent>
       </body>
     </html>
   )
