@@ -57,10 +57,11 @@ package Usecases {
 package Gateway {
   class GameGateway {
     gameInputPort: GameInputPort
+    startGame(): Game
   }
 
   interface GameGatewayInputPort {
-    startGame(): Game
+    registerGame(): Promise<Response>
   }
 
   GameGateway --> GameGatewayInputPort
@@ -69,8 +70,8 @@ package Gateway {
 
 package Driver {
   class GameDriver {
-    startGame(): Response
   }
+
   GameDriver ..|> GameGatewayInputPort
 }
 
