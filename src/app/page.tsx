@@ -9,12 +9,12 @@ export default function Home() {
   const game = useRecoilValue(gameAtom)
 
   const [board, setBoard] = useState(game.lastTurn().board)
-  const [nextDisc, setNextDisc] = useState(game.lastTurn().nextDisc)
+  const [nextDisc, setNextDisc] = useState(game.lastTurn().nextDiscView)
 
   useEffect(() => {
     const lastTurn = game.lastTurn()
     setBoard(lastTurn.board)
-    setNextDisc(lastTurn.nextDisc)
+    setNextDisc(lastTurn.nextDiscView)
   }, [game])
 
   return (
