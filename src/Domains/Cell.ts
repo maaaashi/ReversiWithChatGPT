@@ -7,6 +7,10 @@ export class Cell {
     return this._cell
   }
 
+  set cell(value: 'black' | 'white' | 'empty') {
+    this._cell = value
+  }
+
   view(): string {
     switch (this._cell) {
       case 'black':

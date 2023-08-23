@@ -6,16 +6,18 @@ export class Turn {
     private _id: string,
     private _turnCount: number,
     private _board: Cell[][],
-    private _nextDisc: 'black' | 'white',
-    private _move?: Move,
-    private _endAt?: Date
+    private _nextDisc: 'black' | 'white'
   ) {}
 
   get board() {
     return this._board
   }
 
-  get nextDisc(): string {
+  get nextDisc(): 'black' | 'white' {
+    return this._nextDisc
+  }
+
+  get nextDiscView(): string {
     switch (this._nextDisc) {
       case 'black':
         return '黒'
