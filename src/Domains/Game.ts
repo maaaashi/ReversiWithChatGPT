@@ -1,7 +1,6 @@
 import { initialBoard } from '@/libs/initialBoard'
 import { Turn } from './Turn'
 import { v4 as uuidV4 } from 'uuid'
-import { Cell } from './Cell'
 
 export class Game {
   constructor(private _turns: Turn[] = []) {

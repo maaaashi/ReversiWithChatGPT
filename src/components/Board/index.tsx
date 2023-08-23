@@ -3,6 +3,7 @@ import { Game } from '@/Domains/Game'
 import { Turn } from '@/Domains/Turn'
 import { gameAtom } from '@/atoms/GameAtom'
 import { canPlace } from '@/libs/canPlace'
+import { flipCells } from '@/libs/flipCells'
 import { FC } from 'react'
 import { useRecoilState } from 'recoil'
 import { v4 as uuidV4 } from 'uuid'
@@ -18,14 +19,12 @@ export const Board: FC<Props> = ({ board }) => {
     const board = gameState.lastTurn().board
     if (!canPlace(board, row, col, gameState.lastTurn().nextDisc)) return
 
-    const newBoard = [...Array(8)].map((_, r) => {
-      return [...Array(8)].map((_, c) => {
-        if (r === row && c === col) {
-          return new Cell(gameState.lastTurn().nextDisc)
-        }
-        return board[r][c]
-      })
-    })
+    const newBoard = flipCells(
+      [...board],
+      row,
+      col,
+      gameState.lastTurn().nextDisc
+    )
 
     const nextDisc =
       gameState.lastTurn().nextDisc === 'black' ? 'white' : 'black'
