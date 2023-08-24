@@ -35,10 +35,11 @@ export const canPlace = (
     nRow += dx
     nCol += dy
 
-    while (nRow >= 0 && nRow < 8 && nCol >= 0 && nCol < 8) {
-      if (board[nRow][nCol].cell === cell) {
-        result = true
-      }
+    let findEmpty = false
+
+    while (nRow >= 0 && nRow < 8 && nCol >= 0 && nCol < 8 && !findEmpty) {
+      if (board[nRow][nCol].cell === 'empty') findEmpty = true
+      if (board[nRow][nCol].cell === cell) result = true
       nRow += dx
       nCol += dy
     }
