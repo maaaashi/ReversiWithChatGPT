@@ -18,7 +18,13 @@ export default function Home() {
   }, [game])
 
   const gpt = async () => {
-    const res = await fetch('/api/send-chatgpt')
+    const body = {
+      board: game.lastTurn().getBoardString(),
+    }
+    const res = await fetch('/api/send-chatgpt', {
+      method: 'POST',
+      body: JSON.stringify(body),
+    })
     const json = await res.json()
     console.log(json)
   }

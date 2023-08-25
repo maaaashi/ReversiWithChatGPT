@@ -11,7 +11,7 @@ export class Cell {
     this._cell = value
   }
 
-  view(): string {
+  view(): '●' | '○' | '' {
     switch (this._cell) {
       case 'black':
         return '●'

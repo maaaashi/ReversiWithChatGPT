@@ -1,7 +1,8 @@
 import { Configuration, OpenAIApi } from 'openai'
-import { NextResponse } from 'next/server'
+import { NextResponse, NextRequest } from 'next/server'
 
-export const GET = async () => {
+export const POST = async (req: NextRequest) => {
+  const { board } = await req.json()
   const apiKey = process.env.NEXT_PUBLIC_API_KEY
   const configuration = new Configuration({
     apiKey,
@@ -10,9 +11,17 @@ export const GET = async () => {
 
   const response = await openai.createChatCompletion({
     model: 'gpt-4',
+    temperature: 2,
     messages: [
-      { role: 'system', content: '何を聞かれてもYesと答えてください' },
-      { role: 'user', content: 'あなたはAIですか？' },
+      {
+        role: 'system',
+        content: `What is the next move in Othello?
+      The current board is as follows
+      ${board}
+      I play as White (1). Where is the best place to place the stone?
+
+      [row][col] = `,
+      },
     ],
   })
 

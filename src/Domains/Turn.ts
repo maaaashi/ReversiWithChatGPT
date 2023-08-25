@@ -25,4 +25,21 @@ export class Turn {
         return '白'
     }
   }
+
+  getBoardString(): string {
+    return JSON.stringify(
+      this._board.map((row) => {
+        return row.map((col) => {
+          switch (col.cell) {
+            case 'empty':
+              return 0
+            case 'white':
+              return 1
+            case 'black':
+              return -1
+          }
+        })
+      })
+    )
+  }
 }
