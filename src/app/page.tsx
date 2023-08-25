@@ -8,18 +8,58 @@ import { flipCells } from '@/libs/flipCells'
 import { useEffect, useState } from 'react'
 import { useRecoilState } from 'recoil'
 import { v4 as uuidV4 } from 'uuid'
+import Swal from 'sweetalert2'
 
 export default function Home() {
   const [game, setGame] = useRecoilState(gameAtom)
-
+  const [myStone, setMyStone] = useState<'' | '黒' | '白'>('')
   const [board, setBoard] = useState(game.lastTurn().board)
   const [nextDisc, setNextDisc] = useState(game.lastTurn().nextDiscView)
 
   useEffect(() => {
+    if (myStone) return
+    ;(async () => {
+      const stone = await Swal.fire({
+        title: 'あなたの石は？',
+        showCancelButton: true,
+        confirmButtonColor: '#000',
+        cancelButtonColor: '#000',
+        confirmButtonText: '黒',
+        cancelButtonText: '白',
+        color: '#323245',
+      })
+
+      setMyStone(stone.isConfirmed ? '黒' : '白')
+    })()
+  }, [])
+
+  useEffect(() => {
+    if (!myStone) return
+
     const lastTurn = game.lastTurn()
     setBoard(lastTurn.board)
     setNextDisc(lastTurn.nextDiscView)
+
+    Swal.fire({
+      title: `次は${
+        lastTurn.nextDiscView === myStone ? 'あなた' : 'ChatGPT'
+      }の番です`,
+      icon: 'info',
+      timer: 2000,
+      timerProgressBar: true,
+      showConfirmButton: false,
+    })
+
+    if (lastTurn.nextDiscView === myStone) return
+
+    setTimeout(() => {
+      gpt()
+    }, 2500)
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [game])
+
+  if (!myStone) return <></>
 
   const gpt = async () => {
     const body = {
@@ -39,9 +79,9 @@ export default function Home() {
 
     const newBoard = flipCells([...board], row, col, game.lastTurn().nextDisc)
 
-    const nextDisc = game.lastTurn().nextDisc === 'black' ? 'white' : 'black'
+    const nDisc = game.lastTurn().nextDisc === 'black' ? 'white' : 'black'
 
-    const addTurn = new Turn(uuidV4(), game.turns.length, newBoard, nextDisc)
+    const addTurn = new Turn(uuidV4(), game.turns.length, newBoard, nDisc)
     const newGame = new Game([...game.turns, addTurn])
 
     setGame(newGame)
@@ -49,11 +89,8 @@ export default function Home() {
 
   return (
     <main className='container flex flex-col items-center'>
-      <p>次は{nextDisc}の番です</p>
-      <Board board={board} />
-      <button className='btn' onClick={gpt}>
-        send
-      </button>
+      <p>次は{nextDisc === myStone ? 'あなた' : 'ChatGPT'}の番です</p>
+      <Board board={board} disabled={nextDisc === myStone} />
     </main>
   )
 }

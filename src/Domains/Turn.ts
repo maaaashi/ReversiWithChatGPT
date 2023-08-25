@@ -17,7 +17,7 @@ export class Turn {
     return this._nextDisc
   }
 
-  get nextDiscView(): string {
+  get nextDiscView(): '黒' | '白' {
     switch (this._nextDisc) {
       case 'black':
         return '黒'

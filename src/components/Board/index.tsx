@@ -10,9 +10,10 @@ import { v4 as uuidV4 } from 'uuid'
 
 interface Props {
   board: Cell[][]
+  disabled: boolean
 }
 
-export const Board: FC<Props> = ({ board }) => {
+export const Board: FC<Props> = ({ board, disabled }) => {
   const [gameState, setGameState] = useRecoilState(gameAtom)
 
   const cellClick = (row: number, col: number) => {
@@ -59,13 +60,15 @@ export const Board: FC<Props> = ({ board }) => {
                 >
                   {clickEnabled(cell, index, i) ? (
                     cell.view()
-                  ) : (
+                  ) : disabled ? (
                     <div
                       className='w-8 h-8 bg-base-200 hover:bg-base-300 cursor-pointer'
                       onClick={() => {
                         cellClick(index, i)
                       }}
                     ></div>
+                  ) : (
+                    cell.view()
                   )}
                 </div>
               )
