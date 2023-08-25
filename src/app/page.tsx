@@ -6,12 +6,16 @@ import { gameAtom } from '@/atoms/GameAtom'
 import { Board } from '@/components/Board'
 import { flipCells } from '@/libs/flipCells'
 import { useEffect, useState } from 'react'
-import { useRecoilState } from 'recoil'
+import { useRecoilState, useSetRecoilState } from 'recoil'
 import { v4 as uuidV4 } from 'uuid'
 import Swal from 'sweetalert2'
+import { loadingAtom } from '@/atoms/LoadingAtom'
+import Loading from '@/components/Loading'
 
 export default function Home() {
   const [game, setGame] = useRecoilState(gameAtom)
+  const setLoading = useSetRecoilState(loadingAtom)
+
   const [myStone, setMyStone] = useState<'' | '黒' | '白'>('')
   const [board, setBoard] = useState(game.lastTurn().board)
   const [nextDisc, setNextDisc] = useState(game.lastTurn().nextDiscView)
@@ -52,12 +56,14 @@ export default function Home() {
 
     if (lastTurn.nextDiscView === myStone) return
 
-    setTimeout(() => {
-      gpt()
-    }, 2500)
+    setLoading(true)
+    setTimeout(async () => {
+      await gpt()
+      setLoading(false)
+    }, 1000)
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [game])
+  }, [game, myStone])
 
   if (!myStone) return <></>
 
@@ -70,10 +76,10 @@ export default function Home() {
       method: 'POST',
       body: JSON.stringify(body),
     })
-    const json = await res.json()
+    const { content } = await res.json()
 
-    const row = json[1]
-    const col = json[4]
+    const row = +content[1]
+    const col = +content[4]
 
     const board = game.lastTurn().board
 
@@ -91,6 +97,7 @@ export default function Home() {
     <main className='container flex flex-col items-center'>
       <p>次は{nextDisc === myStone ? 'あなた' : 'ChatGPT'}の番です</p>
       <Board board={board} disabled={nextDisc === myStone} />
+      <Loading />
     </main>
   )
 }
