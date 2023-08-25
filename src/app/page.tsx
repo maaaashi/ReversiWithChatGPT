@@ -17,10 +17,19 @@ export default function Home() {
     setNextDisc(lastTurn.nextDiscView)
   }, [game])
 
+  const gpt = async () => {
+    const res = await fetch('/api/send-chatgpt')
+    const json = await res.json()
+    console.log(json)
+  }
+
   return (
     <main className='container flex flex-col items-center'>
       <p>次は{nextDisc}の番です</p>
       <Board board={board} />
+      <button className='btn' onClick={gpt}>
+        send
+      </button>
     </main>
   )
 }
