@@ -12,7 +12,7 @@ export const POST = async (req: NextRequest) => {
   const nextStone = stone === 'black' ? -1 : 1
 
   const response = await openai.createChatCompletion({
-    model: 'gpt-4',
+    model: 'gpt-3.5-turbo',
     temperature: 2,
     messages: [
       {
