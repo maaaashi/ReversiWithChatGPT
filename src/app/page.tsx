@@ -38,7 +38,26 @@ export default function Home() {
   }, [])
 
   useEffect(() => {
+    if (!game.result) return
+
+    if (game.result === 'win') {
+      Swal.fire({
+        title: 'あなたの勝ちです！',
+        icon: 'success',
+        showConfirmButton: false,
+      })
+    } else {
+      Swal.fire({
+        title: 'あなたの負けです！',
+        icon: 'error',
+        showConfirmButton: false,
+      })
+    }
+  }, [game])
+
+  useEffect(() => {
     if (!myStone) return
+    if (game.result) return
 
     const lastTurn = game.lastTurn()
     setBoard(lastTurn.board)
@@ -77,6 +96,11 @@ export default function Home() {
       body: JSON.stringify(body),
     })
     const { content } = await res.json()
+
+    if (!content) {
+      game.win()
+      return
+    }
 
     const row = +content[1]
     const col = +content[4]

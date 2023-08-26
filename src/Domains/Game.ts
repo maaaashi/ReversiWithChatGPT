@@ -3,12 +3,19 @@ import { Turn } from './Turn'
 import { v4 as uuidV4 } from 'uuid'
 
 export class Game {
-  constructor(private _turns: Turn[] = []) {
+  constructor(
+    private _turns: Turn[] = [],
+    private _result: 'win' | 'lose' | '' = ''
+  ) {
     if (_turns.length === 0) this.newGame()
   }
 
   get turns(): Turn[] {
     return this._turns
+  }
+
+  get result(): 'win' | 'lose' | '' {
+    return this._result
   }
 
   lastTurn(): Turn {
@@ -18,5 +25,13 @@ export class Game {
   newGame(): void {
     this._turns = []
     this._turns.push(new Turn(uuidV4(), 0, initialBoard(), 'black'))
+  }
+
+  win(): void {
+    this._result = 'win'
+  }
+
+  lose(): void {
+    this._result = 'lose'
   }
 }
