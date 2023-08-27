@@ -1,12 +1,11 @@
-import { Cell } from '@/Domains/Cell'
-import { Game } from '@/Domains/Game'
-import { Turn } from '@/Domains/Turn'
+import { Cell } from '@/domains/Cell'
+import { Game } from '@/domains/Game'
+import { Turn } from '@/domains/Turn'
 import { gameAtom } from '@/atoms/GameAtom'
-import { canPlace } from '@/libs/canPlace'
-import { flipCells } from '@/libs/flipCells'
 import { FC } from 'react'
 import { useRecoilState } from 'recoil'
 import { v4 as uuidV4 } from 'uuid'
+import { BoardUsecase } from '@/usecases/BoardUsecase'
 
 interface Props {
   board: Cell[][]
@@ -18,9 +17,10 @@ export const Board: FC<Props> = ({ board, disabled }) => {
 
   const cellClick = (row: number, col: number) => {
     const board = gameState.lastTurn().board
-    if (!canPlace(board, row, col, gameState.lastTurn().nextDisc)) return
+    if (!BoardUsecase.canPlace(board, row, col, gameState.lastTurn().nextDisc))
+      return
 
-    const newBoard = flipCells(
+    const newBoard = BoardUsecase.flipCells(
       [...board],
       row,
       col,
@@ -44,7 +44,12 @@ export const Board: FC<Props> = ({ board, disabled }) => {
   const clickEnabled = (cell: Cell, row: number, col: number): boolean => {
     if (cell.view()) return true
 
-    return !canPlace(board, row, col, gameState.lastTurn().nextDisc)
+    return !BoardUsecase.canPlace(
+      board,
+      row,
+      col,
+      gameState.lastTurn().nextDisc
+    )
   }
 
   return (

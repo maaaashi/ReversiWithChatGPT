@@ -1,16 +1,17 @@
 'use client'
 
-import { Game } from '@/Domains/Game'
-import { Turn } from '@/Domains/Turn'
+import { Game } from '@/domains/Game'
+import { Turn } from '@/domains/Turn'
 import { gameAtom } from '@/atoms/GameAtom'
 import { Board } from '@/components/Board'
-import { flipCells } from '@/libs/flipCells'
 import { useEffect, useState } from 'react'
 import { useRecoilState, useSetRecoilState } from 'recoil'
 import { v4 as uuidV4 } from 'uuid'
 import Swal from 'sweetalert2'
 import { loadingAtom } from '@/atoms/LoadingAtom'
 import Loading from '@/components/Loading'
+import { BoardUsecase } from '@/usecases/BoardUsecase'
+import { GameUsecase } from '@/usecases/GameUsecase'
 
 export default function Home() {
   const [game, setGame] = useRecoilState(gameAtom)
@@ -97,8 +98,10 @@ export default function Home() {
     })
     const { content } = await res.json()
 
+    // エラー時にはユーザーの勝利
     if (!content) {
-      game.win()
+      const newGame = new Game([...game.turns], 'win')
+      setGame(newGame)
       return
     }
 
@@ -107,12 +110,19 @@ export default function Home() {
 
     const board = game.lastTurn().board
 
-    const newBoard = flipCells([...board], row, col, game.lastTurn().nextDisc)
+    const newBoard = BoardUsecase.flipCells(
+      [...board],
+      row,
+      col,
+      game.lastTurn().nextDisc
+    )
 
     const nDisc = game.lastTurn().nextDisc === 'black' ? 'white' : 'black'
 
     const addTurn = new Turn(uuidV4(), game.turns.length, newBoard, nDisc)
+
     const newGame = new Game([...game.turns, addTurn])
+    newGame.result = GameUsecase.judge(newGame, myStone)
 
     setGame(newGame)
   }

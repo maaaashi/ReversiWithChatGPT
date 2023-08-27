@@ -5,7 +5,7 @@ import { v4 as uuidV4 } from 'uuid'
 export class Game {
   constructor(
     private _turns: Turn[] = [],
-    private _result: 'win' | 'lose' | '' = ''
+    private _result: 'win' | 'lose' | 'draw' | '' = ''
   ) {
     if (_turns.length === 0) this.newGame()
   }
@@ -14,8 +14,12 @@ export class Game {
     return this._turns
   }
 
-  get result(): 'win' | 'lose' | '' {
+  get result(): this['result'] {
     return this._result
+  }
+
+  set result(r: Game["_result"]) {
+    this._result = r
   }
 
   lastTurn(): Turn {
@@ -25,13 +29,5 @@ export class Game {
   newGame(): void {
     this._turns = []
     this._turns.push(new Turn(uuidV4(), 0, initialBoard(), 'black'))
-  }
-
-  win(): void {
-    this._result = 'win'
-  }
-
-  lose(): void {
-    this._result = 'lose'
   }
 }

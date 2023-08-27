@@ -1,4 +1,4 @@
-import { Cell } from '@/Domains/Cell'
+import { Cell } from '@/domains/Cell'
 
 export const initialBoard = (): Cell[][] => {
   let board: Cell[][] = [...Array(8)]
