@@ -37,25 +37,28 @@ export const POST = async (req: NextRequest) => {
   let conti = true
   let content = ''
   let roop = 1
+  try {
+    while (conti || roop === 5) {
+      try {
+        const response = await postGPT(await req.json())
+        const con = response.data.choices[0].message?.content
 
-  while (conti || roop === 5) {
-    try {
-      const response = await postGPT(await req.json())
-      const con = response.data.choices[0].message?.content
-
-      if (
-        con &&
-        typeof +content[1] === 'number' &&
-        typeof +content[4] === 'number'
-      ) {
-        conti = false
-        content = con
+        if (
+          con &&
+          typeof +content[1] === 'number' &&
+          typeof +content[4] === 'number'
+        ) {
+          conti = false
+          content = con
+        }
+      } catch (error) {
+        console.log('error')
+        roop++
       }
-    } catch (error) {
-      console.log('error')
-      roop++
     }
-  }
 
-  return NextResponse.json({ content })
+    return NextResponse.json({ content })
+  } catch (error) {
+    return NextResponse.json({ content })
+  }
 }
