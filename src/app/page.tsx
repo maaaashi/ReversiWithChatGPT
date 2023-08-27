@@ -83,7 +83,7 @@ export default function Home() {
     }, 1000)
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [game, myStone])
+  }, [game])
 
   if (!myStone) return <></>
 
@@ -122,7 +122,7 @@ export default function Home() {
     const addTurn = new Turn(uuidV4(), game.turns.length, newBoard, nDisc)
 
     const newGame = new Game([...game.turns, addTurn])
-    newGame.result = GameUsecase.judge(newGame, myStone)
+    newGame.setResult(GameUsecase.judge(newGame, myStone))
 
     setGame(newGame)
   }

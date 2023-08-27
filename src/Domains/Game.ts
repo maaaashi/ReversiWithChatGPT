@@ -14,12 +14,8 @@ export class Game {
     return this._turns
   }
 
-  get result(): this['result'] {
+  get result(): 'win' | 'lose' | 'draw' | '' {
     return this._result
-  }
-
-  set result(r: Game["_result"]) {
-    this._result = r
   }
 
   lastTurn(): Turn {
@@ -29,5 +25,9 @@ export class Game {
   newGame(): void {
     this._turns = []
     this._turns.push(new Turn(uuidV4(), 0, initialBoard(), 'black'))
+  }
+
+  setResult(re: 'win' | 'lose' | 'draw' | ''): void {
+    this._result = re
   }
 }
