@@ -1,4 +1,4 @@
-import { Game } from '@/domains/Game'
+import { Game } from '@/Domains/Game'
 import { atom } from 'recoil'
 
 export const gameAtom = atom<Game>({
