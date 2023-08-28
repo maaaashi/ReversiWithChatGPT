@@ -1,7 +1,7 @@
 'use client'
 
-import { Game } from '@/Domains/Game'
-import { Turn } from '@/Domains/Turn'
+import { Game } from '@/domains/Game'
+import { Turn } from '@/domains/Turn'
 import { gameAtom } from '@/atoms/GameAtom'
 import { Board } from '@/components/Board'
 import { useEffect, useState } from 'react'
@@ -140,11 +140,32 @@ export default function Home() {
     setGame(newGame)
   }
 
+  const pass = () => {
+    const nDisc = game.lastTurn().nextDisc === 'black' ? 'white' : 'black'
+
+    const addTurn = new Turn(
+      uuidV4(),
+      game.turns.length,
+      game.lastTurn().board,
+      nDisc
+    )
+
+    const newGame = new Game([...game.turns, addTurn])
+    setGame(newGame)
+  }
+
   return (
     <main className='container flex flex-col items-center mx-auto'>
       <p>次は{nextDisc === myStone ? 'あなた' : 'ChatGPT'}の番です</p>
       <Board board={board} disabled={nextDisc === myStone} />
       <Loading />
+      {nextDisc === myStone ? (
+        <button className='btn' onClick={pass}>
+          PASS
+        </button>
+      ) : (
+        ''
+      )}
     </main>
   )
 }

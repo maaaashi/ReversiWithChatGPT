@@ -1,5 +1,5 @@
-import { Cell } from '@/Domains/Cell'
-import { Game } from '@/Domains/Game'
+import { Cell } from '@/domains/Cell'
+import { Game } from '@/domains/Game'
 
 export class GameUsecase {
   constructor() {}
