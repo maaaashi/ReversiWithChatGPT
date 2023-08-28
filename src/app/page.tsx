@@ -54,7 +54,7 @@ export default function Home() {
         showConfirmButton: false,
       })
     }
-  }, [game])
+  }, [game, myStone])
 
   useEffect(() => {
     if (!myStone) return
@@ -83,7 +83,7 @@ export default function Home() {
     }, 1000)
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [game])
+  }, [game, myStone])
 
   if (!myStone) return <></>
 
