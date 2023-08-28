@@ -92,10 +92,23 @@ export default function Home() {
       board: game.lastTurn().getBoardString(),
       stone: game.lastTurn().nextDisc,
     }
-    const res = await fetch('/api/send-chatgpt', {
-      method: 'POST',
-      body: JSON.stringify(body),
-    })
+    let res: Response | undefined = undefined
+    let conti = true
+
+    while (conti) {
+      const response: Response = await fetch('/api/send-chatgpt', {
+        method: 'POST',
+        body: JSON.stringify(body),
+      })
+
+      if (response.status === 200) {
+        conti = false
+        res = response
+      }
+    }
+
+    if (!res) return
+
     const { content } = await res.json()
 
     // エラー時にはユーザーの勝利
