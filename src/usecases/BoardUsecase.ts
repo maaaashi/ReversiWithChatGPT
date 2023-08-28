@@ -1,4 +1,4 @@
-import { Cell } from '@/domains/Cell'
+import { Cell } from '@/swap/Cell'
 
 const directions = [
   [-1, -1],

@@ -1,7 +1,7 @@
 'use client'
 
-import { Game } from '@/domains/Game'
-import { Turn } from '@/domains/Turn'
+import { Game } from '@/swap/Game'
+import { Turn } from '@/swap/Turn'
 import { gameAtom } from '@/atoms/GameAtom'
 import { Board } from '@/components/Board'
 import { useEffect, useState } from 'react'
