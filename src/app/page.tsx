@@ -128,7 +128,7 @@ export default function Home() {
   }
 
   return (
-    <main className='container flex flex-col items-center'>
+    <main className='container flex flex-col items-center mx-auto'>
       <p>次は{nextDisc === myStone ? 'あなた' : 'ChatGPT'}の番です</p>
       <Board board={board} disabled={nextDisc === myStone} />
       <Loading />
