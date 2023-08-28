@@ -154,18 +154,57 @@ export default function Home() {
     setGame(newGame)
   }
 
+  const clickLog = async (turn: Turn) => {
+    const confirm = await Swal.fire({
+      title: `${turn.turnCount + 1}: ${turn.nextDiscView}に戻ります`,
+      showCancelButton: true,
+      confirmButtonColor: '#000',
+      cancelButtonColor: '#000',
+      confirmButtonText: 'YES',
+      cancelButtonText: 'NO',
+      color: '#323245',
+    })
+
+    if (!confirm.isConfirmed) return
+
+    const newGame = new Game(game.turns.slice(0, turn.turnCount + 2))
+    setGame(newGame)
+  }
+
   return (
-    <main className='container flex flex-col items-center mx-auto'>
-      <p>次は{nextDisc === myStone ? 'あなた' : 'ChatGPT'}の番です</p>
-      <Board board={board} disabled={nextDisc === myStone} />
-      <Loading />
-      {nextDisc === myStone ? (
-        <button className='btn' onClick={pass}>
-          PASS
-        </button>
-      ) : (
-        ''
-      )}
+    <main className='container mx-auto overflow-y-auto h-full flex flex-1 justify-around p-5 flex-col gap-5 md:flex-row md:gap-0'>
+      <div className='flex flex-col items-center'>
+        <p>次は{nextDisc === myStone ? 'あなた' : 'ChatGPT'}の番です</p>
+        <Board board={board} disabled={nextDisc === myStone} />
+        <Loading />
+        {nextDisc === myStone ? (
+          <button className='btn' onClick={pass}>
+            PASS
+          </button>
+        ) : (
+          ''
+        )}
+      </div>
+      <div className='flex bg-base-200 p-3 flex-col gap-2 items-center h-fit'>
+        ログ
+        <div className='flex flex-col gap-2 w-48 h-64 overflow-auto'>
+          {game.turns.map((_t, index, turns) => {
+            const target = turns[index - 1]
+            if (!target) return <></>
+
+            return (
+              <button
+                className='bg-base-100 py-2 px-5 rounded-lg hover:bg-base-300 w-full disabled:btn-disabled'
+                key={index}
+                onClick={() => clickLog(target)}
+                disabled={nextDisc !== myStone}
+              >
+                {target.turnCount + 1}: {target.nextDiscView}
+              </button>
+            )
+          })}
+        </div>
+      </div>
     </main>
   )
 }

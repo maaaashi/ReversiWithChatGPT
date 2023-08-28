@@ -1,5 +1,4 @@
 import { Cell } from './Cell'
-import { Move } from './Move'
 
 export class Turn {
   constructor(
@@ -11,6 +10,10 @@ export class Turn {
 
   get board() {
     return this._board
+  }
+
+  get turnCount() {
+    return this._turnCount
   }
 
   get nextDisc(): 'black' | 'white' {

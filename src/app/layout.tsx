@@ -14,7 +14,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang='ja'>
-      <body className='bg-base-300 min-h-screen overflow-hidden w-full'>
+      <body className='bg-base-300 h-screen overflow-hidden w-full flex flex-col'>
         <RecoilRootComponent>
           <Header />
           {children}
