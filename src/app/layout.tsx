@@ -2,6 +2,7 @@ import { Header } from '@/components/Header'
 import './globals.css'
 import type { Metadata } from 'next'
 import { RecoilRootComponent } from '@/components/RecoilRootComponent'
+import 'animate.css'
 
 export const metadata: Metadata = {
   title: 'ChatCPT Reversi',

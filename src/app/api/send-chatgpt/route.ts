@@ -14,12 +14,24 @@ const postGPT = async (params: { board: string; stone: string }) => {
   const { board, stone } = params
   const nextStone = stone === 'black' ? -1 : 1
 
-  const messageContent = `What is the next move in Othello?
+  const messageContentPattern1 = `
+  What is the next move in Othello?
   The current board is as follows
   ${board}
   I play as ${stone} (${nextStone}). Where is the best place to place the stone?
 
   [row][col] = `
+
+  const messageContentPattern2 = `
+  Given the Othello board:
+
+  ${board}
+
+  Playing as ${stone} (${nextStone}), Where you can turn over the most opponent stones.
+
+  [row][col] = `
+
+  console.log(messageContentPattern2)
 
   return await openai.createChatCompletion({
     model,
@@ -27,7 +39,7 @@ const postGPT = async (params: { board: string; stone: string }) => {
     messages: [
       {
         role: 'system',
-        content: messageContent,
+        content: messageContentPattern1,
       },
     ],
   })

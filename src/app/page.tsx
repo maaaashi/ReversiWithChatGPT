@@ -70,8 +70,10 @@ export default function Home() {
       }の番です`,
       icon: 'info',
       timer: 2000,
-      timerProgressBar: true,
       showConfirmButton: false,
+      showClass: {
+        popup: 'animate__animated animate__flip',
+      },
     })
 
     if (lastTurn.nextDiscView === myStone) return
