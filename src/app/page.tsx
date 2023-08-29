@@ -72,7 +72,7 @@ export default function Home() {
       timer: 2000,
       showConfirmButton: false,
       showClass: {
-        popup: 'animate__animated animate__flip',
+        popup: 'animate__animated animate__backInLeft',
       },
     })
 
