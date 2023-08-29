@@ -12,12 +12,13 @@ import { loadingAtom } from '@/atoms/LoadingAtom'
 import Loading from '@/components/Loading'
 import { BoardUsecase } from '@/usecases/BoardUsecase'
 import { GameUsecase } from '@/usecases/GameUsecase'
+import { myStoneAtom } from '@/atoms/MyStoneAtom'
 
 export default function Home() {
   const [game, setGame] = useRecoilState(gameAtom)
   const setLoading = useSetRecoilState(loadingAtom)
 
-  const [myStone, setMyStone] = useState<'' | '黒' | '白'>('')
+  const [myStone, setMyStone] = useRecoilState(myStoneAtom)
   const [board, setBoard] = useState(game.lastTurn().board)
   const [nextDisc, setNextDisc] = useState(game.lastTurn().nextDiscView)
 
@@ -192,12 +193,12 @@ export default function Home() {
         <div className='flex flex-col gap-2 w-48 h-64 overflow-auto'>
           {game.turns.map((_t, index, turns) => {
             const target = turns[index - 1]
-            if (!target) return <></>
+            if (!target) return <div key={index}></div>
 
             return (
               <button
                 className='bg-base-100 py-2 px-5 rounded-lg hover:bg-base-300 w-full disabled:btn-disabled'
-                key={index}
+                key={`log_${index}`}
                 onClick={() => clickLog(target)}
                 disabled={nextDisc !== myStone}
               >

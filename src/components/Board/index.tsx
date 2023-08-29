@@ -3,9 +3,11 @@ import { Game } from '@/domains/Game'
 import { Turn } from '@/domains/Turn'
 import { gameAtom } from '@/atoms/GameAtom'
 import { FC } from 'react'
-import { useRecoilState } from 'recoil'
+import { useRecoilState, useRecoilValue } from 'recoil'
 import { v4 as uuidV4 } from 'uuid'
 import { BoardUsecase } from '@/usecases/BoardUsecase'
+import { GameUsecase } from '@/usecases/GameUsecase'
+import { myStoneAtom } from '@/atoms/MyStoneAtom'
 
 interface Props {
   board: Cell[][]
@@ -14,8 +16,11 @@ interface Props {
 
 export const Board: FC<Props> = ({ board, disabled }) => {
   const [gameState, setGameState] = useRecoilState(gameAtom)
+  const myStone = useRecoilValue(myStoneAtom)
 
   const cellClick = (row: number, col: number) => {
+    if (!myStone) return
+
     const board = gameState.lastTurn().board
     if (!BoardUsecase.canPlace(board, row, col, gameState.lastTurn().nextDisc))
       return
@@ -37,6 +42,7 @@ export const Board: FC<Props> = ({ board, disabled }) => {
       nextDisc
     )
     const newGame = new Game([...gameState.turns, addTurn])
+    newGame.setResult(GameUsecase.judge(newGame, myStone))
 
     setGameState(newGame)
   }
