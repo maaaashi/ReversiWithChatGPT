@@ -9,7 +9,7 @@ const Loading = () => {
 
   return (
     <div className='flex justify-center items-center'>
-      ChatGPT考え中... <span className='loading loading-ring loading-lg'></span>
+      考え中... <span className='loading loading-ring loading-lg'></span>
     </div>
   )
 }

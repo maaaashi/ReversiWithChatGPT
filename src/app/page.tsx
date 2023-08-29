@@ -13,6 +13,8 @@ import Loading from '@/components/Loading'
 import { BoardUsecase } from '@/usecases/BoardUsecase'
 import { GameUsecase } from '@/usecases/GameUsecase'
 import { myStoneAtom } from '@/atoms/MyStoneAtom'
+import PassButton from '@/components/Buttons/Pass'
+import TurnLog from '@/components/TurnLog/indesx'
 
 export default function Home() {
   const [game, setGame] = useRecoilState(gameAtom)
@@ -143,69 +145,19 @@ export default function Home() {
     setGame(newGame)
   }
 
-  const pass = () => {
-    const nDisc = game.lastTurn().nextDisc === 'black' ? 'white' : 'black'
-
-    const addTurn = new Turn(
-      uuidV4(),
-      game.turns.length,
-      game.lastTurn().board,
-      nDisc
-    )
-
-    const newGame = new Game([...game.turns, addTurn])
-    setGame(newGame)
-  }
-
-  const clickLog = async (turn: Turn) => {
-    const confirm = await Swal.fire({
-      title: `${turn.turnCount + 1}: ${turn.nextDiscView}に戻ります`,
-      showCancelButton: true,
-      confirmButtonColor: '#000',
-      cancelButtonColor: '#000',
-      confirmButtonText: 'YES',
-      cancelButtonText: 'NO',
-      color: '#323245',
-    })
-
-    if (!confirm.isConfirmed) return
-
-    const newGame = new Game(game.turns.slice(0, turn.turnCount + 2))
-    setGame(newGame)
-  }
-
   return (
-    <main className='container mx-auto overflow-y-auto h-full flex flex-1 justify-around p-5 flex-col gap-5 items-center'>
-      <div className='flex flex-col items-center'>
-        <p>次は{nextDisc === myStone ? 'あなた' : 'ChatGPT'}の番です</p>
+    <main className='container mx-auto overflow-y-auto h-full flex flex-1 p-5 flex-col gap-5 items-center'>
+      <div className='flex gap-5'>
+        <div className='flex flex-col gap-5 self-end items-center bg-base-200 p-5 rounded-lg w-44'>
+          <div>
+            <p>{nextDisc === myStone ? 'あなた' : 'ChatGPT'}の番です</p>
+            <Loading />
+          </div>
+          <PassButton />
+        </div>
         <Board board={board} disabled={nextDisc === myStone} />
-        <Loading />
-        {nextDisc === myStone ? (
-          <button className='btn' onClick={pass}>
-            PASS
-          </button>
-        ) : (
-          ''
-        )}
-      </div>
-      <div className='flex bg-base-200 p-3 flex-col gap-2 items-center h-fit w-fit'>
-        ログ
-        <div className='flex flex-col gap-2 w-48 h-64 overflow-auto'>
-          {game.turns.map((_t, index, turns) => {
-            const target = turns[index - 1]
-            if (!target) return <div key={index}></div>
-
-            return (
-              <button
-                className='bg-base-100 py-2 px-5 rounded-lg hover:bg-base-300 w-full disabled:btn-disabled'
-                key={`log_${index}`}
-                onClick={() => clickLog(target)}
-                disabled={nextDisc !== myStone}
-              >
-                {target.turnCount + 1}: {target.nextDiscView}
-              </button>
-            )
-          })}
+        <div className='flex flex-col items-center w-44'>
+          <TurnLog />
         </div>
       </div>
     </main>
