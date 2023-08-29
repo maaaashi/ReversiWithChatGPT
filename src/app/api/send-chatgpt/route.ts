@@ -31,8 +31,6 @@ const postGPT = async (params: { board: string; stone: string }) => {
 
   [row][col] = `
 
-  console.log(messageContentPattern2)
-
   return await openai.createChatCompletion({
     model,
     temperature: 2,
