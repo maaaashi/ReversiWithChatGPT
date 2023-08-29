@@ -15,6 +15,7 @@ import { GameUsecase } from '@/usecases/GameUsecase'
 import { myStoneAtom } from '@/atoms/MyStoneAtom'
 import PassButton from '@/components/Buttons/Pass'
 import TurnLog from '@/components/TurnLog/indesx'
+import Status from '@/components/Status'
 
 export default function Home() {
   const [game, setGame] = useRecoilState(gameAtom)
@@ -160,6 +161,7 @@ export default function Home() {
           <TurnLog />
         </div>
       </div>
+      <Status />
     </main>
   )
 }
