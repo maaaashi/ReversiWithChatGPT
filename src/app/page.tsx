@@ -174,7 +174,7 @@ export default function Home() {
   }
 
   return (
-    <main className='container mx-auto overflow-y-auto h-full flex flex-1 justify-around p-5 flex-col gap-5 md:flex-row md:gap-0'>
+    <main className='container mx-auto overflow-y-auto h-full flex flex-1 justify-around p-5 flex-col gap-5 items-center'>
       <div className='flex flex-col items-center'>
         <p>次は{nextDisc === myStone ? 'あなた' : 'ChatGPT'}の番です</p>
         <Board board={board} disabled={nextDisc === myStone} />
@@ -187,7 +187,7 @@ export default function Home() {
           ''
         )}
       </div>
-      <div className='flex bg-base-200 p-3 flex-col gap-2 items-center h-fit'>
+      <div className='flex bg-base-200 p-3 flex-col gap-2 items-center h-fit w-fit'>
         ログ
         <div className='flex flex-col gap-2 w-48 h-64 overflow-auto'>
           {game.turns.map((_t, index, turns) => {
