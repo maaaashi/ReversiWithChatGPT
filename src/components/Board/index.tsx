@@ -42,13 +42,13 @@ export const Board: FC<Props> = ({ board, disabled }) => {
       nextDisc
     )
     const newGame = new Game([...gameState.turns, addTurn])
-    newGame.setResult(GameUsecase.judge(newGame, myStone))
 
     setGameState(newGame)
   }
 
   const clickEnabled = (cell: Cell, row: number, col: number): boolean => {
     if (cell.view()) return true
+    if (gameState.result) return true
 
     return !BoardUsecase.canPlace(
       board,

@@ -65,6 +65,13 @@ export default function Home() {
     if (!myStone) return
     if (game.result) return
 
+    const result = GameUsecase.judge(game, myStone as '黒' | '白')
+
+    if (result) {
+      const newGame = new Game(game.turns, result)
+      setGame(newGame)
+    }
+
     const lastTurn = game.lastTurn()
     setBoard(lastTurn.board)
     setNextDisc(lastTurn.nextDiscView)
@@ -82,6 +89,8 @@ export default function Home() {
     })
 
     if (lastTurn.nextDiscView === myStone) return
+
+    if (result) return
 
     setLoading(true)
     setTimeout(async () => {
