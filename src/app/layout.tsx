@@ -1,4 +1,3 @@
-import { Header } from '@/components/Header'
 import './globals.css'
 import type { Metadata } from 'next'
 import { RecoilRootComponent } from '@/components/RecoilRootComponent'
@@ -15,14 +14,8 @@ export default function RootLayout({
 }) {
   return (
     <html lang='ja'>
-      <body
-        className='bg-base-300 h-screen overflow-hidden w-full flex flex-col'
-        style={{ height: '100vh !important' }}
-      >
-        <RecoilRootComponent>
-          <Header />
-          {children}
-        </RecoilRootComponent>
+      <body>
+        <RecoilRootComponent>{children}</RecoilRootComponent>
       </body>
     </html>
   )

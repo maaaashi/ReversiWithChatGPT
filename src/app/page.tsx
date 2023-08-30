@@ -16,6 +16,7 @@ import { myStoneAtom } from '@/atoms/MyStoneAtom'
 import PassButton from '@/components/Buttons/Pass'
 import TurnLog from '@/components/TurnLog/indesx'
 import Status from '@/components/Status'
+import { Header } from '@/components/Header'
 
 export default function Home() {
   const [game, setGame] = useRecoilState(gameAtom)
@@ -147,21 +148,27 @@ export default function Home() {
   }
 
   return (
-    <main className='container mx-auto overflow-y-auto h-full flex flex-1 p-5 flex-col gap-5 items-center'>
-      <div className='flex gap-5'>
-        <div className='flex flex-col gap-5 self-end items-center bg-base-200 p-5 rounded-lg w-44'>
-          <div>
-            <p>{nextDisc === myStone ? 'あなた' : 'ChatGPT'}の番です</p>
-            <Loading />
+    <main
+      className='bg-base-300 h-screen overflow-hidden w-full flex flex-col'
+      style={{ height: '100vh !important' }}
+    >
+      <Header />
+      <div className='container mx-auto overflow-y-auto flex flex-1 p-5 flex-col gap-5 items-center'>
+        <div className='flex gap-5 flex-col md:flex-row'>
+          <div className='w-full flex flex-col gap-5 self-end items-center bg-base-200 p-5 rounded-lg md:w-44'>
+            <div>
+              <p>{nextDisc === myStone ? 'あなた' : 'ChatGPT'}の番です</p>
+              <Loading />
+            </div>
+            <PassButton />
           </div>
-          <PassButton />
+          <Board board={board} disabled={nextDisc === myStone} />
+          <div className='hidden md:flex flex-col items-center w-44'>
+            <TurnLog />
+          </div>
         </div>
-        <Board board={board} disabled={nextDisc === myStone} />
-        <div className='flex flex-col items-center w-44'>
-          <TurnLog />
-        </div>
+        <Status />
       </div>
-      <Status />
     </main>
   )
 }
