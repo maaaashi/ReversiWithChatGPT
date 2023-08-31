@@ -1,6 +1,7 @@
 import { Turn } from './Turn'
 import { v4 as uuidV4 } from 'uuid'
 import { BoardUsecase } from '@/usecases/BoardUsecase'
+import { initialBoard } from '@/libs/initialBoard'
 
 export class Game {
   constructor(
@@ -24,9 +25,7 @@ export class Game {
 
   newGame(): void {
     this._turns = []
-    this._turns.push(
-      new Turn(uuidV4(), 0, BoardUsecase.initialBoard(), 'black')
-    )
+    this._turns.push(new Turn(uuidV4(), 0, initialBoard(), 'black'))
   }
 
   set result(re: 'win' | 'lose' | 'draw' | '') {
