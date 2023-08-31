@@ -35,7 +35,7 @@ const TurnLog = () => {
       <input type='checkbox' className='peer' />
       <div className='collapse-title text-xl font-medium'>ログ</div>
       <div className='collapse-content'>
-        <div className='flex flex-col gap-2 overflow-auto'>
+        <div className='flex flex-col gap-2 overflow-y-auto h-60'>
           {game.turns.map((_t, index, turns) => {
             const target = turns[index - 1]
             if (!target) return <div key={index}></div>
@@ -48,6 +48,17 @@ const TurnLog = () => {
                 disabled={myStone !== game.lastTurn().nextDiscView}
               >
                 {target.turnCount + 1}: {target.nextDiscView}
+              </button>
+            )
+          })}
+          {[...Array(20)].map((_, i) => {
+            return (
+              <button
+                className='bg-base-100 py-2 px-5 rounded-lg hover:bg-base-300 w-full disabled:btn-disabled'
+                disabled={myStone !== game.lastTurn().nextDiscView}
+                key={i}
+              >
+                hoge
               </button>
             )
           })}

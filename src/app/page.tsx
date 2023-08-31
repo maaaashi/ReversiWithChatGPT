@@ -173,7 +173,7 @@ export default function Home() {
             <PassButton />
           </div>
           <Board board={board} disabled={nextDisc === myStone} />
-          <div className='hidden md:flex flex-col items-center w-44'>
+          <div className='hidden md:flex flex-col items-center w-48'>
             <TurnLog />
           </div>
         </div>
