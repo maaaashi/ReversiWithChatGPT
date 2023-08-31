@@ -1,11 +1,10 @@
-import { Cell } from '@/domains/Cell'
 import { Game } from '@/domains/Game'
 
 export class GameUsecase {
-  constructor() {}
+  constructor(private _game: Game) {}
 
-  static judge(game: Game, myStone: '黒' | '白'): Game['_result'] {
-    const board = game.lastTurn().board
+  judge(myStone: '黒' | '白'): Game['_result'] {
+    const board = this._game.lastTurn().board
     const stone = myStone === '黒' ? 'black' : 'white'
 
     const flatArray = board.reduce((acc, curr) => acc.concat(curr), [])

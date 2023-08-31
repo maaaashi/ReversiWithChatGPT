@@ -6,7 +6,6 @@ import { FC } from 'react'
 import { useRecoilState, useRecoilValue } from 'recoil'
 import { v4 as uuidV4 } from 'uuid'
 import { BoardUsecase } from '@/usecases/BoardUsecase'
-import { GameUsecase } from '@/usecases/GameUsecase'
 import { myStoneAtom } from '@/atoms/MyStoneAtom'
 
 interface Props {
@@ -22,11 +21,11 @@ export const Board: FC<Props> = ({ board, disabled }) => {
     if (!myStone) return
 
     const board = gameState.lastTurn().board
-    if (!BoardUsecase.canPlace(board, row, col, gameState.lastTurn().nextDisc))
-      return
+    const boardUsecase = new BoardUsecase(board)
 
-    const newBoard = BoardUsecase.flipCells(
-      [...board],
+    if (!boardUsecase.canPlace(row, col, gameState.lastTurn().nextDisc)) return
+
+    const newBoard = boardUsecase.flipCells(
       row,
       col,
       gameState.lastTurn().nextDisc
@@ -50,12 +49,9 @@ export const Board: FC<Props> = ({ board, disabled }) => {
     if (cell.view()) return true
     if (gameState.result) return true
 
-    return !BoardUsecase.canPlace(
-      board,
-      row,
-      col,
-      gameState.lastTurn().nextDisc
-    )
+    const boardUsecase = new BoardUsecase(board)
+
+    return !boardUsecase.canPlace(row, col, gameState.lastTurn().nextDisc)
   }
 
   return (

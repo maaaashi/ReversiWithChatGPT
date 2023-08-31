@@ -65,7 +65,9 @@ export default function Home() {
     if (!myStone) return
     if (game.result) return
 
-    const result = GameUsecase.judge(game, myStone as '黒' | '白')
+    const gameUsecase = new GameUsecase(game)
+
+    const result = gameUsecase.judge(myStone as '黒' | '白')
 
     if (result) {
       const newGame = new Game(game.turns, result)
@@ -138,20 +140,19 @@ export default function Home() {
     const col = +content[4]
 
     const board = game.lastTurn().board
+    const boardUsecase = new BoardUsecase(board)
 
-    const newBoard = BoardUsecase.flipCells(
-      [...board],
-      row,
-      col,
-      game.lastTurn().nextDisc
-    )
+    const newBoard = boardUsecase.flipCells(row, col, game.lastTurn().nextDisc)
 
     const nDisc = game.lastTurn().nextDisc === 'black' ? 'white' : 'black'
 
     const addTurn = new Turn(uuidV4(), game.turns.length, newBoard, nDisc)
 
     const newGame = new Game([...game.turns, addTurn])
-    newGame.setResult(GameUsecase.judge(newGame, myStone))
+
+    const gameUsecase = new GameUsecase(newGame)
+
+    newGame.result = gameUsecase.judge(myStone)
 
     setGame(newGame)
   }

@@ -1,6 +1,5 @@
 import { Turn } from './Turn'
 import { v4 as uuidV4 } from 'uuid'
-import { Cell } from './Cell'
 import { BoardUsecase } from '@/usecases/BoardUsecase'
 
 export class Game {
@@ -30,7 +29,7 @@ export class Game {
     )
   }
 
-  setResult(re: 'win' | 'lose' | 'draw' | ''): void {
+  set result(re: 'win' | 'lose' | 'draw' | '') {
     this._result = re
   }
 }

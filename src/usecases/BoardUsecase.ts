@@ -12,14 +12,9 @@ const directions = [
 ]
 
 export class BoardUsecase {
-  constructor() {}
+  constructor(private _board: Cell[][]) {}
 
-  static canPlace(
-    board: Cell[][],
-    row: number,
-    col: number,
-    cell: 'black' | 'white'
-  ): boolean {
+  canPlace(row: number, col: number, cell: 'black' | 'white'): boolean {
     const opponent = cell === 'black' ? 'white' : 'black'
     let result = false
 
@@ -31,7 +26,7 @@ export class BoardUsecase {
         continue
       }
 
-      if (board[nRow][nCol].cell !== opponent) {
+      if (this._board[nRow][nCol].cell !== opponent) {
         continue
       }
 
@@ -41,8 +36,8 @@ export class BoardUsecase {
       let findEmpty = false
 
       while (nRow >= 0 && nRow < 8 && nCol >= 0 && nCol < 8 && !findEmpty) {
-        if (board[nRow][nCol].cell === 'empty') findEmpty = true
-        if (board[nRow][nCol].cell === cell) result = true
+        if (this._board[nRow][nCol].cell === 'empty') findEmpty = true
+        if (this._board[nRow][nCol].cell === cell) result = true
         nRow += dx
         nCol += dy
       }
@@ -51,19 +46,14 @@ export class BoardUsecase {
     return result
   }
 
-  static flipCells(
-    board: Cell[][],
-    row: number,
-    col: number,
-    cell: 'black' | 'white'
-  ): Cell[][] {
+  flipCells(row: number, col: number, cell: 'black' | 'white'): Cell[][] {
     const opponent = cell === 'black' ? 'white' : 'black'
     let results: Cell[][] = [...Array(8)].fill(null).map((_, r_i) =>
       [...Array(8)].map((_, c_i) => {
         if (r_i === row && c_i === col) {
           return new Cell(cell)
         }
-        return board[r_i][c_i]
+        return this._board[r_i][c_i]
       })
     )
 
@@ -77,7 +67,7 @@ export class BoardUsecase {
         nx < 8 &&
         ny >= 0 &&
         ny < 8 &&
-        board[nx][ny].cell === opponent
+        this._board[nx][ny].cell === opponent
       ) {
         stonesToFlip.push({ x: nx, y: ny })
         nx += dx
@@ -90,7 +80,7 @@ export class BoardUsecase {
         nx < 8 &&
         ny >= 0 &&
         ny < 8 &&
-        board[nx][ny].cell === cell
+        this._board[nx][ny].cell === cell
       ) {
         for (const stone of stonesToFlip) {
           results[stone.x][stone.y] = new Cell(cell)
